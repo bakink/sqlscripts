@@ -1,0 +1,20 @@
+
+declare
+ uid number;
+ l_result integer;
+ sqltext varchar2(1000) := 'begin dbms_job.broken(:JOBNO, TRUE); end;  ';
+ l_rsql varchar2(1000); 
+ myint integer;
+ begin
+     select user_id into UID from all_users where username like 'BI_MSTR';
+
+   for x in (select job from dba_jobs where log_user='BI_MSTR' and broken='N' )
+   loop
+     l_rsql:=replace(sqltext,':JOBNO',x.job);
+     myint:=sys.dbms_sys_sql.open_cursor();
+     sys.dbms_sys_sql.parse_as_user(myint,l_rsql,dbms_sql.native,UID);
+     l_result:=sys.dbms_sys_sql.execute(myint);
+     sys.dbms_sys_sql.close_cursor(myint);
+   end loop;     
+ end ;
+ 
