@@ -1,0 +1,23 @@
+--http://www.redstk.com/accessing-the-alert-log-from-sql/
+--https://oracleninja.wordpress.com/2015/04/17/reading-alert-log-from-sqlplus-11g/
+
+select inst_id, originating_timestamp, message_text
+from TABLE(gv$(cursor(
+select inst_id, originating_timestamp, message_text
+from v$diag_alert_ext
+where originating_timestamp > (sysdate - 3)
+and message_text like '%ORA-%'
+)))
+order by inst_id, originating_timestamp;
+
+--****
+
+select inst_id, originating_timestamp, message_text
+from TABLE(gv$(cursor(
+select inst_id, originating_timestamp, message_text
+from v$diag_alert_ext
+where originating_timestamp > (sysdate - 3)
+and message_text like '%ORA-%'
+and component_id='rdbms'
+)))
+order by inst_id, originating_timestamp;
