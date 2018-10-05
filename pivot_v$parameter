@@ -1,0 +1,10 @@
+SELECT * FROM
+(
+  SELECT name, display_value FROM v$parameter
+)
+PIVOT
+(
+  max(display_value)
+  FOR name IN ('sga_target' sga_target ,'pga_aggregate_target' pga_aggregate_target ,'use_large_pages' use_large_pages,'job_queue_processes' job_queue_processes ,'parallel_max_servers' parallel_max_servers)
+)
+; 
