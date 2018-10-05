@@ -1,3 +1,12 @@
+set lines 200
+col sga_target format a20
+col pga_aggregate_target format a20
+col use_large_pages format a20
+col job_queue_processes format a20
+col parallel_max_servers format a20
+
+select * from v$dataguard_stats;
+
 SELECT * FROM
 (
   SELECT name, display_value FROM v$parameter
@@ -6,5 +15,4 @@ PIVOT
 (
   max(display_value)
   FOR name IN ('sga_target' sga_target ,'pga_aggregate_target' pga_aggregate_target ,'use_large_pages' use_large_pages,'job_queue_processes' job_queue_processes ,'parallel_max_servers' parallel_max_servers)
-)
-; 
+);
