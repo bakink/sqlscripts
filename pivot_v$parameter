@@ -5,8 +5,6 @@ col use_large_pages format a20
 col job_queue_processes format a20
 col parallel_max_servers format a20
 
-select * from v$dataguard_stats;
-
 SELECT * FROM
 (
   SELECT name, display_value FROM v$parameter
